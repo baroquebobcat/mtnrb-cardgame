@@ -22,7 +22,11 @@ module MountainRB
       end
 
       def resource_score
-        find_cards('Cattle').sum{|c| c.value}
+        if find_cards('Horse').empty?
+          0
+        else
+          find_cards('Cattle').sum{|c| c.value}
+        end
       end
       def land_score
         2
@@ -91,5 +95,31 @@ describe MountainRB::CardGame::Hand do
     let(:hand) { Hand.new :cowboy, cards }
 
     it { hand.resource_score.should == 8 }
+  end
+
+  context "cowboy with no horse" do
+    let(:cards) { [   Card.new('Cattle', 8),
+                      Card.new('Mountain', 5),
+                      Card.new('Lasso', 1)
+                  ] }
+    let(:hand) { Hand.new :cowboy, cards }
+
+    it { hand.resource_score.should == 0 }
+  end
+
+  context "prospector example" do
+    let(:cards) { [ Card.new('Ore Vein', 1),
+                    Card.new('Ore Vein', 5),
+                    Card.new('Mountain', 3),
+                    Card.new('Pickaxe', 4),
+                    Card.new('Burro', 2)
+                  ] }
+    let(:hand) { Hand.new :prospector, cards }
+
+#    it { hand.resource_score.should == 6 }
+#    it { hand.land_score.should == 2 }
+#    it { hand.tool_score.should == 1 }
+#    it { hand.beast_score.should == 1 }
+#    it { hand.score.should == 7 }
   end
 end
