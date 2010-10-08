@@ -5,6 +5,7 @@ module MountainRB
       attr_accessor :cards
 
       def initialize cards
+        raise TooManyCards.new unless cards.size <=6
         @cards = cards
       end
     end
@@ -15,10 +16,18 @@ module MountainRB
         @value =  value
       end
     end
+    TooManyCards = Class.new StandardError 
   end
 end
+
+ include MountainRB::CardGame
 describe MountainRB::CardGame::Hand do
   it "takes a list of 6 cards" do
-    MountainRB::CardGame::Hand.new 6.times.map{ MountainRB::CardGame::Card.new 'foo',1}
+    Hand.new 6.times.map{ Card.new 'foo',1}
+  end
+  it "complains when there are more than 6 cards" do
+    lambda {
+      Hand.new 7.times.map{ Card.new 'foo',1}
+    }.should raise_error TooManyCards
   end
 end
