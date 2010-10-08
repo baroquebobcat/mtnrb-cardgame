@@ -29,13 +29,18 @@ module MountainRB
         end
       end
       def land_score
-        2
+        find_cards('Plains').sum{|c| c.value } +
+        find_cards('Mountain').sum{|c| c.value / 2 }
       end
       def tool_score
         1
       end
       def beast_score
-        1
+        if find_cards('Mountain').empty?
+          find_cards('Horse').sum{|c| c.value}
+        else
+          find_cards('Horse').sum{|c| c.value / 2}
+        end
       end
 
       def score
@@ -86,7 +91,18 @@ describe MountainRB::CardGame::Hand do
     it { hand.score.should == 7 }
   end
 
-  context "cowboy example 2 " do
+  context "cowboy with only plains" do
+    let(:cards) { [ Card.new('Plains', 5) ] }
+    let(:hand) { Hand.new :cowboy, cards }
+    it { hand.land_score.should == 5 }
+  end
+
+  context "cowboy with only forest" do
+    let(:cards) { [ Card.new('Forest', 5) ] }
+    let(:hand) { Hand.new :cowboy, cards }
+    it { hand.land_score.should == 0 }
+  end
+  context "cowboy with different cattle 2 " do
     let(:cards) { [   Card.new('Cattle', 8),
                       Card.new('Mountain', 5),
                       Card.new('Lasso', 1),
@@ -105,6 +121,7 @@ describe MountainRB::CardGame::Hand do
     let(:hand) { Hand.new :cowboy, cards }
 
     it { hand.resource_score.should == 0 }
+    it { hand.beast_score.should == 0 }
   end
 
   context "prospector example" do
