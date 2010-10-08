@@ -76,9 +76,9 @@ describe MountainRB::CardGame::Hand do
     let(:hand) { Hand.new :prospector, cards }
 
     it { hand.resource_score.should == 6 }
-#    it { hand.land_score.should == 2 }
-#    it { hand.tool_score.should == 1 }
-#    it { hand.beast_score.should == 1 }
-#    it { hand.score.should == 7 }
+    it { hand.land_score.should == 3 }
+#    it { hand.tool_score.should == 4 }
+#    it { hand.beast_score.should == 4 }
+#    it { hand.score.should == 17 }
   end
 end

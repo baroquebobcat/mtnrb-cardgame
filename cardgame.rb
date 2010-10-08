@@ -29,14 +29,22 @@ module MountainRB
           else
             find_cards('Cattle').sum{|c| c.value }
           end
-        when :prospector
+        else
           find_cards('Ore Vein').sum{|c| c.value }
         end
       end
 
       def land_score
-        find_cards('Plains').sum{|c| c.value } +
-        find_cards('Mountain').sum{|c| c.value / 2 }
+        land_scoring = case role
+               when :cowboy
+                 {:half => 'Mountain',
+                  :full => 'Plains'}
+               else
+                  {:half => 'Forest',
+                   :full => 'Mountain'}
+               end
+        find_cards(land_scoring[:full]).sum{|c| c.value } +
+        find_cards(land_scoring[:half]).sum{|c| c.value / 2 }
       end
 
       def tool_score
