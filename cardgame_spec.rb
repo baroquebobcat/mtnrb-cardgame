@@ -55,7 +55,6 @@ describe MountainRB::CardGame::Hand do
     it { hand.tool_score.should == 8 }
   end
 
-
   context "cowboy with no horse" do
     let(:cards) { [   Card.new('Cattle', 8),
                       Card.new('Mountain', 5),
@@ -76,7 +75,7 @@ describe MountainRB::CardGame::Hand do
                   ] }
     let(:hand) { Hand.new :prospector, cards }
 
-#    it { hand.resource_score.should == 6 }
+    it { hand.resource_score.should == 6 }
 #    it { hand.land_score.should == 2 }
 #    it { hand.tool_score.should == 1 }
 #    it { hand.beast_score.should == 1 }

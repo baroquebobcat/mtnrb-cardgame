@@ -22,19 +22,27 @@ module MountainRB
       end
 
       def resource_score
-        if find_cards('Horse').empty?
-          0
-        else
-          find_cards('Cattle').sum{|c| c.value}
+        case role
+        when :cowboy
+          if find_cards('Horse').empty?
+            0
+          else
+            find_cards('Cattle').sum{|c| c.value }
+          end
+        when :prospector
+          find_cards('Ore Vein').sum{|c| c.value }
         end
       end
+
       def land_score
         find_cards('Plains').sum{|c| c.value } +
         find_cards('Mountain').sum{|c| c.value / 2 }
       end
+
       def tool_score
         highest_card('Lasso').value
       end
+
       def beast_score
         if find_cards('Mountain').empty?
           find_cards('Horse').sum{|c| c.value}
