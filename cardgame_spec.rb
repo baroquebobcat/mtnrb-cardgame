@@ -78,7 +78,7 @@ describe MountainRB::CardGame::Hand do
     it { hand.resource_score.should == 6 }
     it { hand.land_score.should == 3 }
     it { hand.tool_score.should == 4 }
-#    it { hand.beast_score.should == 4 }
+    it { hand.beast_score.should == 4 }
 #    it { hand.score.should == 17 }
   end
 end
