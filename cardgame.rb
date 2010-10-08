@@ -48,7 +48,13 @@ module MountainRB
       end
 
       def tool_score
-        highest_card('Lasso').value
+        tool = case role
+               when :cowboy
+                 'Lasso'
+               else
+                 'Pickaxe'
+               end
+        highest_card(tool).value
       end
 
       def beast_score
