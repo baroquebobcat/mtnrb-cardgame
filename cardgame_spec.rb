@@ -49,6 +49,13 @@ describe MountainRB::CardGame::Hand do
     it { hand.resource_score.should == 8 }
   end
 
+ context "cowboy with two lassos" do
+    let(:hand) { Hand.new :cowboy, [ Card.new('Lasso', 1), Card.new('Lasso', 8) ] }
+
+    it { hand.tool_score.should == 8 }
+  end
+
+
   context "cowboy with no horse" do
     let(:cards) { [   Card.new('Cattle', 8),
                       Card.new('Mountain', 5),

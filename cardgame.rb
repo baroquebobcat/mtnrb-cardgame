@@ -33,7 +33,7 @@ module MountainRB
         find_cards('Mountain').sum{|c| c.value / 2 }
       end
       def tool_score
-        1
+        highest_card('Lasso').value
       end
       def beast_score
         if find_cards('Mountain').empty?
@@ -49,6 +49,9 @@ module MountainRB
 
       def find_cards name
         cards.select {|c| c.name == name}
+      end
+      def highest_card name
+        find_cards(name).sort_by {|c| c.value }.last
       end
     end
 
