@@ -39,9 +39,12 @@ module MountainRB
                when :cowboy
                  {:half => 'Mountain',
                   :full => 'Plains'}
-               else
+               when :prospector
                   {:half => 'Forest',
                    :full => 'Mountain'}
+               when :trapper
+                   {:half => 'Mountain',
+                    :full => 'Forest'}
                end
         find_cards(land_scoring[:full]).sum{|c| c.value } +
         find_cards(land_scoring[:half]).sum{|c| c.value / 2 }

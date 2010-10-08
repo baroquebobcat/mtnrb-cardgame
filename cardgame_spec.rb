@@ -101,4 +101,27 @@ describe MountainRB::CardGame::Hand do
       it { hand.land_score.should == 0 }
     end
   end
+
+
+  context "with role trapper" do
+    let(:role){:trapper}
+    context "with only mountains" do
+      let(:hand) { Hand.new role, [ Card.new('Mountain', 5) ] }
+      it { hand.land_score.should == 2 }
+    end
+    
+    context "with only forest" do
+      let(:hand) { Hand.new role, [ Card.new('Forest', 5) ] }
+      it { hand.land_score.should == 5 }
+    end
+    
+    context "with only plains" do
+      let(:hand) { Hand.new role, [ Card.new('Plains', 5) ] }
+      it { hand.land_score.should == 0 }
+    end    
+  end
+
+  context "with role homesteader" do
+    let(:role){:homesteader}
+  end
 end
