@@ -1,17 +1,28 @@
+module Enumerable
+  def sum
+    unless block_given?
+      inject(0){|sum, i| sum + i }
+    else
+      inject(0){|sum, i| sum + yield(i) }
+    end
+  end
+end
+
 module MountainRB
 
   module CardGame
     class Hand
-      attr_accessor :cards, :role
 
+      attr_accessor :cards, :role
+ 
       def initialize role, cards
         raise TooManyCards.new unless cards.size <=6
-        @cards = cards
         @role = role
+        @cards = cards
       end
 
       def resource_score
-        3
+        find_cards('Cattle').sum{|c| c.value}
       end
       def land_score
         2
@@ -22,12 +33,18 @@ module MountainRB
       def beast_score
         1
       end
+
       def score
-        7
+        resource_score + land_score + tool_score + beast_score
+      end
+
+      def find_cards name
+        cards.select {|c| c.name == name}
       end
     end
+
     class Card
-      attr_accessor :name, :type, :value
+      attr_accessor :name, :value
       def initialize name, value
         @name = name
         @value =  value
@@ -50,17 +67,29 @@ describe MountainRB::CardGame::Hand do
     }.should raise_error TooManyCards
   end
 
-  context "cowboy example" do
+  context "cowboy example 1 " do
     let(:cards) { [   Card.new('Cattle', 3),
                       Card.new('Mountain', 5),
                       Card.new('Lasso', 1),
-                      Card.new('Horse', 2)]
-    }
+                      Card.new('Horse', 2)
+                  ] }
     let(:hand) { Hand.new :cowboy, cards }
+
     it { hand.resource_score.should == 3 }
     it { hand.land_score.should == 2 }
     it { hand.tool_score.should == 1 }
     it { hand.beast_score.should == 1 }
     it { hand.score.should == 7 }
+  end
+
+  context "cowboy example 2 " do
+    let(:cards) { [   Card.new('Cattle', 8),
+                      Card.new('Mountain', 5),
+                      Card.new('Lasso', 1),
+                      Card.new('Horse', 2)
+                  ] }
+    let(:hand) { Hand.new :cowboy, cards }
+
+    it { hand.resource_score.should == 8 }
   end
 end
