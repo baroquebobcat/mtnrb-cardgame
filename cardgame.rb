@@ -61,12 +61,16 @@ module MountainRB
       end
 
       def beast_score
-        case role
-        when :cowboy
-            find_cards('Horse').sum{|c| c.value / (find_cards('Mountain').empty? ? 1 : 2 )}
-        else
-          find_cards('Burro').sum{|c| c.value * (find_cards('Mountain').empty? ? 1 : 2 )}
+        horse_score = find_cards('Horse').sum do |h|
+          h.value / (find_cards('Mountain').empty? ? 1 : 2 )
         end
+        burro_score = find_cards('Burro').sum do |h|
+          h.value * (find_cards('Mountain').empty? ? 1 : 2 )
+        end
+        ox_score = find_cards('Ox').sum do |h|
+          h.value * (role == :homesteader ? 2 : 1 )
+        end
+        burro_score + horse_score + ox_score
       end
 
       def score

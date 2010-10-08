@@ -2,6 +2,7 @@ require File.dirname(__FILE__) + '/cardgame'
 include MountainRB::CardGame
 
 describe MountainRB::CardGame::Hand do
+
   it "takes a role and a list of 6 cards" do
     Hand.new :cowboy, 6.times.map{ Card.new 'foo',1}
   end
@@ -11,6 +12,25 @@ describe MountainRB::CardGame::Hand do
       Hand.new :cowboy, 7.times.map{ Card.new 'foo',1}
     }.should raise_error TooManyCards
   end
+
+  describe "#beast_score" do
+    context "with a horse and a mountain" do
+      let(:hand) { Hand.new :irrelevant, [Card.new('Horse', 2),Card.new('Mountain', 2)] }
+      it { hand.beast_score.should == 1 } 
+    end
+
+    context "with a burro and a mountain" do
+      let(:hand) { Hand.new :irrelevant, [Card.new('Burro', 2),Card.new('Mountain', 2)] }
+      it { hand.beast_score.should == 4 } 
+    end
+
+    context "with an ox and a homesteader" do
+      let(:hand) { Hand.new :homesteader, [Card.new('Burro', 2),Card.new('Mountain', 2)] }
+      it { hand.beast_score.should == 4 } 
+    end
+
+  end
+
   context "role as cowboy" do
     let (:role) {:cowboy}
     
@@ -118,7 +138,9 @@ describe MountainRB::CardGame::Hand do
     context "with only plains" do
       let(:hand) { Hand.new role, [ Card.new('Plains', 5) ] }
       it { hand.land_score.should == 0 }
-    end    
+    end
+
+    
   end
 
   context "with role homesteader" do
