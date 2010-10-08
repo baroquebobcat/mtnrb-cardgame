@@ -97,18 +97,18 @@ describe MountainRB::CardGame::Hand do
     it { hand.land_score.should == 5 }
   end
 
+  context "cowboy with only mountains" do
+    let(:hand) { Hand.new :cowboy, [ Card.new('Mountain', 5) ] }
+    it { hand.land_score.should == 2 }
+  end
+
   context "cowboy with only forest" do
-    let(:cards) { [ Card.new('Forest', 5) ] }
-    let(:hand) { Hand.new :cowboy, cards }
+    let(:hand) { Hand.new :cowboy, [ Card.new('Forest', 5) ] }
     it { hand.land_score.should == 0 }
   end
-  context "cowboy with different cattle 2 " do
-    let(:cards) { [   Card.new('Cattle', 8),
-                      Card.new('Mountain', 5),
-                      Card.new('Lasso', 1),
-                      Card.new('Horse', 2)
-                  ] }
-    let(:hand) { Hand.new :cowboy, cards }
+
+  context "cowboy with different cattle" do
+    let(:hand) { Hand.new :cowboy, [ Card.new('Horse', 8), Card.new('Cattle', 8) ] }
 
     it { hand.resource_score.should == 8 }
   end
